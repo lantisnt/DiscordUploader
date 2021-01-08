@@ -1,12 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Discord;
 using Discord.Webhook;
 
 namespace DiscordUploader
@@ -22,7 +17,7 @@ namespace DiscordUploader
         {
             if (!File.Exists(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile))
             {
-                Console.WriteLine("Config file " + AppDomain.CurrentDomain.SetupInformation.ConfigurationFile + " does not exist. Create.");
+                Console.WriteLine("Config does not exist. Creating.");
                 string[] lines =
                 {
                     "<?xml version=\"1.0\" encoding=\"utf-8\" ?>", "<configuration>", "<appSettings>",
@@ -78,19 +73,17 @@ namespace DiscordUploader
 
             if (String.IsNullOrEmpty(configuration.filepath) || !File.Exists(configuration.filepath))
             {
-                Console.WriteLine("File " + configuration.filepath + " does not exist.");
-                Console.WriteLine("Provide path to file:");
+                Console.WriteLine("Provide path to file you want to upload:");
                 configuration.filepath = Console.ReadLine();
             }
 
             if (String.IsNullOrEmpty(configuration.webhook))
             {
-                Console.WriteLine("Missing webhook url.");
-                Console.WriteLine("Provide url:");
+                Console.WriteLine("Provide webhook url:");
                 configuration.webhook = Console.ReadLine();
             }
 
-            Console.WriteLine("Insert Comment:");
+            Console.WriteLine("Type in Comment:");
             string comment = Console.ReadLine();
             Console.WriteLine("Uploading...");
             new Program().Upload(comment, configuration.filepath, configuration.webhook).GetAwaiter().GetResult();
